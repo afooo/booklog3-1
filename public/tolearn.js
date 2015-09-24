@@ -11,7 +11,7 @@ app.Lessons = Backbone.Model.extend({
 	}
 });
 
-app.Lesson = Backbone.View.extend({
+app.Lesson = Backbone.Model.extend({
 	url: function(){
 		return '/learn/lessons/' + this.attributes.id
 	},
@@ -26,7 +26,9 @@ app.Lesson = Backbone.View.extend({
 app.ListView = Backbone.View.extend({
 	el: '#tolearnlist',
 	template: _.template( $('#tmpl-tolearnlist').html() ),
-	events: {},
+	events: {
+		'click #lesson': 'listLesson'
+	},
 	initialize: function(){
 		this.model = new app.Lessons();
 		
@@ -36,6 +38,12 @@ app.ListView = Backbone.View.extend({
 	},
 	render: function(){
 		this.$el.html(this.template(this.model.attributes));
+	},
+	listLesson: function(evt){
+		var id = $(evt.target).data('id');
+
+		app.lessonView.model.set('id', id);
+		app.lessonView.model.fetch();
 	}
 });
 

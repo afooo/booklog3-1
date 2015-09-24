@@ -63,6 +63,7 @@ var userSchema = new mongoose.Schema({
 var lessonSchema = new mongoose.Schema({
   lessonName: { type: String, unique: true },
   lessonLearn: { type: String, unique: true },
+  lessonUrl: { type: String, unique: true },
   timeCreated: { type: Date, default: Date.now } 
 });
 

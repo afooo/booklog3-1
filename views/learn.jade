@@ -11,21 +11,22 @@ block content
 
   script(type='text/template', id='tmpl-tolearnlist')
     br
-    br
     ul
       <% _.each(lessons, function(lesson){ %>
-      li
-        a(href='#') <%= lesson.lessonName %>
-      <% }) %>
+      li(id='lesson')
+        a(href='#', data-id!='<%= lesson._id %>') <%= lesson.lessonName %>
+      <% }); %>
   
   script(type='text/template', id='tmpl-lessonlearn')
-    br
-    br
     div.well.non-editable
       .row
         h2 <%= lesson.lessonName %>
-        h6 created on <%= lesson.createdTime %>
-        p <%= lesson.lessonlearn %>
+        h6
+          small created on
+          i  <%= lesson.timeCreated %>
+        p url:
+          a  <%= lesson.lessonUrl %>
+        p <%= lesson.lessonLearn %>
         button.btn.btn-primary.pull-right.btn.edit Edit
 
     div.well.editable.hide

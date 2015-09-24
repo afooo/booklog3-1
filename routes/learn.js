@@ -10,10 +10,20 @@ router.get('/lessons', function(req, res, next){
 	req.app.db.model.Learn
 		.find({})
 		.exec(function(err, lessons){
-			console.log(lessons);
 			res.send({
 				lessons: lessons
 			});
+		});
+});
+
+router.get('/lessons/:id', function(req, res, next){
+	req.app.db.model.Learn
+		.findOne({ _id: req.params.id })
+		.exec(function(err, lesson){
+			res.send({
+				lesson: lesson
+			});
+			res.end();
 		});
 });
 

@@ -32,6 +32,7 @@ router.post('/lessons', function(req, res, next){
 	
 	var doc = new lesson({
 		lessonName: req.query.lessonName,
+		lessonUrl: req.query.lessonUrl,
 		lessonLearn: req.query.lessonLearn
 	});
 	console.log(doc);

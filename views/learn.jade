@@ -2,11 +2,12 @@ extends layout
 
 block content
   .row
-    .col-md-6.col-sm-6
+    .col-md-4.col-sm-4
       h2 To Learn list
+      button.btn.btn-xs.btn-info.btn-edit Add
       div#tolearnlist
-    .col-md-6.col-sm-6
-      h2 Lesson Info
+    .col-md-8.col-sm-8
+      br
       div#lessoninfo
 
   script(type='text/template', id='tmpl-tolearnlist')
@@ -20,26 +21,37 @@ block content
   script(type='text/template', id='tmpl-lessonlearn')
     div.well.non-editable
       .row
-        h2 <%= lesson.lessonName %>
+        h3(id!='<%= lesson._id %>') <%= lesson.lessonName %>
         h6
           small created on
           i  <%= lesson.timeCreated %>
         p url:
-          a  <%= lesson.lessonUrl %>
+          a(href!='<%= lesson.lessonUrl %>')  <%= lesson.lessonUrl %>
         p <%= lesson.lessonLearn %>
-        button.btn.btn-primary.pull-right.btn.edit Edit
+        button.btn.btn-xs.btn-info.btn-edit Edit
 
     div.well.editable.hide
       .row
         form
-          div.control-group
-            label Lesson Name:
-            div.controls
+        .alerts
+          input.hide(name='id', value!='<%= lesson._id %>')
+          .control-group
+            label.control-label Lesson
+            .controls
               input.form-control(type='text', name='lessonname', value!='<%= lesson.lessonName %>')
+          .control-group
+            label.control-label URL
+            .controls
+              input.form-control(type='text', name='lessonurl', value!='<%= lesson.lessonUrl %>')
+          .control-group
+            label.control-label Briefing
+            .controls
+              textarea.form-control(type='text', name='lessonlearn') <%= lesson.lessonLearn %>
           br
           div
-            button.btn.btn-large.btn-info.btn.save('type=button') Save
-            button.btn.btn-large.btn-info.btn.cancel('type=button') Cancel
+            button.btn.btn-md.btn-info.btn-save('type=button') Save
+            | 
+            button.btn.btn-md.btn-cancel('type=button') Cancel
             
   script(src='javascripts/jquery.min.js')
   script(src='javascripts/bootstrap.min.js')

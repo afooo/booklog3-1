@@ -28,7 +28,7 @@ app.ListView = Backbone.View.extend({
 	template: _.template( $('#tmpl-tolearnlist').html() ),
 	events: {
 		'click #lesson': 'listLesson',
-		'click #add': 'add'
+		'click .btn-add': 'add'
 	},
 	initialize: function(){
 		this.model = new app.Lessons();
@@ -44,10 +44,10 @@ app.ListView = Backbone.View.extend({
 		var id = $(evt.target).data('id');
 
 		app.lessonView.model.set('id', id);
-		app.lessonView.model.fetch();
+		app.lessonView.model.fetch();			
 	},
-	add: function(){
-
+	add: function(evt){
+		app.lessonView.model.clear();
 	}
 });
 
@@ -66,23 +66,43 @@ app.LessonView = Backbone.View.extend({
 	},
 	render: function(){
 		this.$el.html( this.template( this.model.attributes ));
+		console.log('id: ' + this.model.id);
+		console.log('defaults: ' + this.model.defaults);
+		if(this.model.id === '') this.edit();
 	},
-	edit: function(){
+	edit: function(evt){
 		this.$el.find('.non-editable').addClass('hide');
 		this.$el.find('.editable').removeClass('hide');
+
+		if(this.model.id === ''){
+			this.$el.find('[name=name-static]').addClass('hide');
+			this.$el.find('[name=lessonname]').removeClass('hide');
+		} else {
+			this.$el.find('[name=lessonname]').addClass('hide');
+			this.$el.find('[name=name-static]').removeClass('hide');
+		}
 	},
-	save: function(){
+	save: function(evt){
+        evt.preventDefault();
+
+        var name = this.$el.find('[name=lessonname]').val(),
+        	url = this.$el.find('[name=lessonurl]').val(),
+        	learn = this.$el.find('[name=lessonlearn]').val();
+
+		console.log(name + ', ' + url + ', ' + learn);
+
 		this.model.save({
-			id: this.$el.find('[name=id').val(),
-			lesson: {
-				lessonName: this.$el.find('[name=lessonname]').val(),
-				lessonUrl: this.$el.find('[name=lessonurl]').val(),
-				lessonLearn: this.$el.find('[name=lessonlearn]').val()
-			}
+			lessonName: name,
+			lessonUrl: url,
+			lessonLearn: learn
 		});
-		console.log('its saved');
+
 	},
-	cancel: function(){
+	cancel: function(evt){
+		if(this.model.id === 'add') {
+			app.lessonView = new app.LessonView();
+		}
+
 		this.$el.find('.editable').addClass('hide');
 		this.$el.find('.non-editable').removeClass('hide');		
 	}

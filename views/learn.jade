@@ -4,13 +4,14 @@ block content
   .row
     .col-md-4.col-sm-4
       h2 To Learn list
-      button.btn.btn-xs.btn-info.btn-edit Add
       div#tolearnlist
     .col-md-8.col-sm-8
       br
       div#lessoninfo
 
   script(type='text/template', id='tmpl-tolearnlist')
+    button.btn.btn-xs.btn-info.btn-add Add
+    br
     br
     ul
       <% _.each(lessons, function(lesson){ %>
@@ -37,12 +38,14 @@ block content
           input.hide(name='id', value!='<%= lesson._id %>')
           .control-group
             label.control-label Lesson
+            p.form-control-static.text-muted(name='name-static', value!='<%= lesson.lessonName %>') <%= lesson.lessonName %>
             .controls
-              input.form-control(type='text', name='lessonname', value!='<%= lesson.lessonName %>')
+              input.form-control.hide(type='text', name='lessonname', value!='<%= lesson.lessonName %>')
           .control-group
             label.control-label URL
             .controls
               input.form-control(type='text', name='lessonurl', value!='<%= lesson.lessonUrl %>')
+          br
           .control-group
             label.control-label Briefing
             .controls

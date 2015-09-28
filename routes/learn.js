@@ -17,13 +17,18 @@ router.get('/lessons', function(req, res, next){
 });
 
 router.get('/lessons/:id', function(req, res, next){
+	if(req.params.id === 'add') {
+		res.send({
+			lesson: {}
+		});
+	}
+
 	req.app.db.model.Learn
 		.findOne({ _id: req.params.id })
 		.exec(function(err, lesson){
 			res.send({
 				lesson: lesson
 			});
-			res.end();
 		});
 });
 
@@ -31,9 +36,9 @@ router.post('/lessons', function(req, res, next){
 	var lesson = req.app.db.model.Learn;
 	
 	var doc = new lesson({
-		lessonName: req.query.lessonName,
-		lessonUrl: req.query.lessonUrl,
-		lessonLearn: req.query.lessonLearn
+		lessonName: req.body.lessonName,
+		lessonUrl: req.body.lessonUrl,
+		lessonLearn: req.body.lessonLearn
 	});
 	console.log(doc);
 	doc.save();

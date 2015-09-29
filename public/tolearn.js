@@ -47,7 +47,9 @@ app.ListView = Backbone.View.extend({
 		app.lessonView.model.fetch();			
 	},
 	add: function(evt){
-		app.lessonView.model.clear();
+		app.lessonView.model.clear({ silent: true });
+		app.lessonView.model.set('id', '');
+		app.lessonView.model.fetch();			
 	}
 });
 
@@ -99,12 +101,13 @@ app.LessonView = Backbone.View.extend({
 
 	},
 	cancel: function(evt){
-		if(this.model.id === 'add') {
-			app.lessonView = new app.LessonView();
+		if(this.model.id === '') {
+			this.$el.empty();
+			return this;
 		}
 
 		this.$el.find('.editable').addClass('hide');
-		this.$el.find('.non-editable').removeClass('hide');		
+		this.$el.find('.non-editable').removeClass('hide');
 	}
 });
 

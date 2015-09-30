@@ -40,6 +40,7 @@ router.post('/lessons', function(req, res, next){
 		lessonUrl: req.body.lessonUrl,
 		lessonLearn: req.body.lessonLearn
 	});
+
 	console.log(doc);
 	doc.save();
 

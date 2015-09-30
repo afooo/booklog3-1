@@ -13,7 +13,8 @@ app.Lessons = Backbone.Model.extend({
 
 app.Lesson = Backbone.Model.extend({
 	url: function(){
-		return '/learn/lessons/' + this.attributes.id
+		return '/learn/lessons' + 
+			(this.id === '' ?  '' : '/' + this.id);
 	},
 	id: '',
 	defaults: {
@@ -47,9 +48,12 @@ app.ListView = Backbone.View.extend({
 		app.lessonView.model.fetch();			
 	},
 	add: function(evt){
-		app.lessonView.model.clear({ silent: true });
-		app.lessonView.model.set('id', '');
-		app.lessonView.model.fetch();			
+		var that = app.lessonView;
+		that.model = new app.Lesson();
+
+		that.listenTo(that.model, 'sync', that.render);
+		that.listenTo(that.model, 'change', that.render);
+		that.model.fetch();			
 	}
 });
 
@@ -101,7 +105,7 @@ app.LessonView = Backbone.View.extend({
 
 	},
 	cancel: function(evt){
-		if(this.model.id === '') {
+		if(this.model.isNew()) {
 			this.$el.empty();
 			return this;
 		}

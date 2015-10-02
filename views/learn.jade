@@ -13,11 +13,10 @@ block content
     button.btn.btn-xs.btn-info.btn-add Add
     br
     br
-    ul
-      <% _.each(lessons, function(lesson){ %>
-      li(id='lesson')
-        a(href='#', data-id!='<%= lesson._id %>') <%= lesson.lessonName %>
-      <% }); %>
+    <% _.each(lessons, function(lesson){ %>
+    p
+      a(href='#', id='lesson', data-id!='<%= lesson._id %>') <%= lesson.lessonName %>
+    <% }); %>
   
   script(type='text/template', id='tmpl-lessonlearn')
     div.well.non-editable

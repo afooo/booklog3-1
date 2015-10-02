@@ -40,4 +40,18 @@ router.post('/lessons', function(req, res, next){
 	});
 });
 
+router.put('/lessons/:id', function(req, res, next){
+	var doc = {
+		lessonName: req.body.lessonName,
+		lessonUrl: req.body.lessonUrl,
+		lessonLearn: req.body.lessonLearn		
+	};
+
+	req.app.db.model.Learn
+		.findOneAndUpdate({ _id: req.params.id }, doc,
+			function(err, doc){
+				res.send(doc);
+			});
+});
+
 module.exports = router;

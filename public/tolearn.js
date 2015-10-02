@@ -18,7 +18,7 @@ app.ListView = Backbone.View.extend({
 	el: '#tolearnlist',
 	template: _.template( $('#tmpl-tolearnlist').html() ),
 	events: {
-		'click #lesson': 'listLesson',
+		'click #lesson': 'viewLesson',
 		'click .btn-add': 'add'
 	},
 	initialize: function(){
@@ -31,11 +31,12 @@ app.ListView = Backbone.View.extend({
 	render: function(){
 		this.$el.html(this.template(this.model.attributes));
 	},
-	listLesson: function(evt){
+	viewLesson: function(evt){
 		var id = $(evt.target).data('id');
 
 		app.lessonView.model.set('id', id);
-		app.lessonView.model.fetch();			
+		app.lessonView.model.fetch();
+		return false;		
 	},
 	add: function(evt){
 		var that = app.lessonView;

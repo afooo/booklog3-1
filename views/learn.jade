@@ -38,9 +38,9 @@ block content
           input.hide(name='id', value!='<%= lesson._id %>')
           .control-group
             label.control-label Lesson
-            p.form-control-static.text-muted(name='name-static', value!='<%= lesson.lessonName %>') <%= lesson.lessonName %>
+            p.form-control-static.text-muted.hide(name='name-static', value!='<%= lesson.lessonName %>') <%= lesson.lessonName %>
             .controls
-              input.form-control.hide(type='text', name='lessonname', value!='<%= lesson.lessonName %>')
+              input.form-control(type='text', name='lessonname', value!='<%= lesson.lessonName %>')
           .control-group
             label.control-label URL
             .controls

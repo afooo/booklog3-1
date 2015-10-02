@@ -17,12 +17,6 @@ router.get('/lessons', function(req, res, next){
 });
 
 router.get('/lessons/:id', function(req, res, next){
-	if(req.params.id === 'add') {
-		res.send({
-			lesson: {}
-		});
-	}
-
 	req.app.db.model.Learn
 		.findOne({ _id: req.params.id })
 		.exec(function(err, lesson){
@@ -41,10 +35,9 @@ router.post('/lessons', function(req, res, next){
 		lessonLearn: req.body.lessonLearn
 	});
 
-	console.log(doc);
-	doc.save();
-
-	res.end(console.log("it's saved"));
+	doc.save(function(err, doc, numberAffected){
+		res.send(doc);
+	});
 });
 
 module.exports = router;

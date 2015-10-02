@@ -2,17 +2,6 @@ var app = app || {};
 
 app.Lessons = Backbone.Model.extend({
 	url: function(){
-		return '/learn/lessons'
-	},
-	defaults: {
-		errors: [],
-		errfor: {},
-		lessons: []
-	}
-});
-
-app.Lesson = Backbone.Model.extend({
-	url: function(){
 		return '/learn/lessons' + 
 			(this.id === '' ?  '' : '/' + this.id);
 	},
@@ -20,6 +9,7 @@ app.Lesson = Backbone.Model.extend({
 	defaults: {
 		errors: [],
 		errfor: {},
+		lessons: [],
 		lesson: {}
 	}
 });
@@ -49,7 +39,7 @@ app.ListView = Backbone.View.extend({
 	},
 	add: function(evt){
 		var that = app.lessonView;
-		that.model = new app.Lesson();
+		that.model = new app.Lessons();
 
 		that.listenTo(that.model, 'sync', that.render);
 		that.listenTo(that.model, 'change', that.render);
@@ -66,43 +56,43 @@ app.LessonView = Backbone.View.extend({
 		'click .btn-cancel': 'cancel'
 	},
 	initialize: function(){
-		this.model = new app.Lesson();
+		this.model = new app.Lessons();
 		this.listenTo(this.model, 'sync', this.render);
 		this.listenTo(this.model, 'change', this.render);
 	},
 	render: function(){
 		this.$el.html( this.template( this.model.attributes ));
 		console.log('id: ' + this.model.id);
-		console.log('defaults: ' + this.model.defaults);
 		if(this.model.id === '') this.edit();
 	},
 	edit: function(evt){
 		this.$el.find('.non-editable').addClass('hide');
 		this.$el.find('.editable').removeClass('hide');
 
-		if(this.model.id === ''){
+/*		if(this.model.id === ''){
 			this.$el.find('[name=name-static]').addClass('hide');
 			this.$el.find('[name=lessonname]').removeClass('hide');
 		} else {
 			this.$el.find('[name=lessonname]').addClass('hide');
 			this.$el.find('[name=name-static]').removeClass('hide');
 		}
+*/
 	},
 	save: function(evt){
         evt.preventDefault();
+        var self = this;
 
-        var name = this.$el.find('[name=lessonname]').val(),
-        	url = this.$el.find('[name=lessonurl]').val(),
-        	learn = this.$el.find('[name=lessonlearn]').val();
+        var obj = {
+        	lessonName: this.$el.find('[name=lessonname]').val(),
+        	lessonUrl: this.$el.find('[name=lessonurl]').val(),
+        	lessonLearn: this.$el.find('[name=lessonlearn]').val()
+        };
 
-		console.log(name + ', ' + url + ', ' + learn);
-
-		this.model.save({
-			lessonName: name,
-			lessonUrl: url,
-			lessonLearn: learn
-		});
-
+		this.model.save(obj, { success: function(model, res, opt){
+			app.listView.model.fetch();
+			self.model.set('id', model.attributes._id);
+			self.model.fetch();
+		}});
 	},
 	cancel: function(evt){
 		if(this.model.isNew()) {

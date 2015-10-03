@@ -54,4 +54,12 @@ router.put('/lessons/:id', function(req, res, next){
 			});
 });
 
+router.delete('/lessons/:id', function(req, res, next){
+	req.app.db.model.Learn
+		.findByIdAndRemove(req.params.id,
+			function(err, lesson){
+				res.send(lesson);
+			});
+});
+
 module.exports = router;

@@ -19,7 +19,9 @@ app.ListView = Backbone.View.extend({
 	template: _.template( $('#tmpl-tolearnlist').html() ),
 	events: {
 		'click #lesson': 'viewLesson',
-		'click .btn-add': 'add'
+		'click .btn-add': 'add',
+		'click .btn-delete': 'delete',
+		'click [name=delete]': 'remove'
 	},
 	initialize: function(){
 		this.model = new app.Lessons();
@@ -36,7 +38,6 @@ app.ListView = Backbone.View.extend({
 
 		app.lessonView.model.set('id', id);
 		app.lessonView.model.fetch();
-		return false;		
 	},
 	add: function(evt){
 		var that = app.lessonView;
@@ -45,6 +46,28 @@ app.ListView = Backbone.View.extend({
 		that.listenTo(that.model, 'sync', that.render);
 		that.listenTo(that.model, 'change', that.render);
 		that.model.fetch();			
+	},
+	delete: function(evt){
+		var cross = this.$el.find('[name=delete]');
+
+		if(cross.hasClass('hide'))
+			cross.removeClass('hide');
+		else cross.addClass('hide');
+	},
+	remove: function(evt){
+		var self = this;
+		var that = app.lessonView;
+		var id = $(evt.target).data('id');
+
+		that.model = new app.Lessons();
+		that.model.set('id', id);
+		that.model.destroy({
+			success: function(lesson, res){
+				self.model.fetch();
+				that.$el.empty();
+				return that;
+			}
+		});
 	}
 });
 

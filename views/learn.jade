@@ -11,11 +11,15 @@ block content
 
   script(type='text/template', id='tmpl-tolearnlist')
     button.btn.btn-xs.btn-info.btn-add Add
+    = ' '
+    button.btn.btn-xs.btn-danger.btn-delete Delete
     br
     br
     <% _.each(lessons, function(lesson){ %>
     p
       a(href='#', id='lesson', data-id!='<%= lesson._id %>') <%= lesson.lessonName %>
+      = ' '
+      span.glyphicon.glyphicon-remove.hide(name='delete', data-id!='<%= lesson._id %>')
     <% }); %>
   
   script(type='text/template', id='tmpl-lessonlearn')
